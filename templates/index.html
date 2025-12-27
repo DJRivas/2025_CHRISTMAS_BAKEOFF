@@ -1,33 +1,101 @@
-
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2025 Holiday Bakeoff</title>
-<link rel="stylesheet" href="/static/styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>2025 Holiday Bakeoff</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<h1>🎄 2025 Holiday Bakeoff</h1>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">🎄 2025 Holiday Bakeoff</div>
+      <div class="brand-subtitle">Live leaderboard • Real‑time updates • Holiday vibes</div>
+    </div>
+    <nav class="topbar-actions">
+      <a class="btn btn-ghost" href="/admin" aria-label="Open admin">🛠️ Admin</a>
+    </nav>
+  </header>
 
-<div class="card">
-<h2>Submit a Score</h2>
-<label>Judge Name</label>
-<input id="judge" />
+  <main class="container">
+    <section class="grid">
+      <div class="card" id="leaderboardCard">
+        <div class="card-header">
+          <div class="card-title">🏆 Leaderboard</div>
+          <button class="btn btn-ghost" id="refreshBtn" type="button">↻ Refresh</button>
+        </div>
+        <div class="card-body">
+          <div id="leaderboard" class="leaderboard"></div>
+        </div>
+      </div>
 
-<label>Participant / Dessert</label>
-<select id="participant"></select>
+      <div class="card" id="submitCard">
+        <div class="card-header">
+          <div class="card-title">🧁 Submit a Score</div>
+        </div>
+        <div class="card-body">
+          <form id="scoreForm" class="form">
+            <label class="label">Judge name</label>
+            <input class="input" id="judge" placeholder="Your name" autocomplete="name" required />
 
-<label>Score: <span id="scoreEmoji">🙂</span></label>
-<input type="range" min="1" max="10" value="5" id="scoreRange">
+            <label class="label">Participant / Dessert</label>
+            <select class="input" id="participantSelect" required></select>
 
-<button onclick="submitScore()">Submit</button>
-</div>
+            <div class="slider-block">
+              <div class="slider-row">
+                <span class="label-inline">🍪 Taste</span>
+                <span class="emoji" id="tasteEmoji">🙂</span>
+                <span class="pill" id="tasteValue">5</span>
+              </div>
+              <input type="range" min="1" max="10" value="5" class="range" id="tasteRange" />
+            </div>
 
-<div class="card">
-<h2>🏆 Leaderboard</h2>
-<div id="leaderboard"></div>
-</div>
+            <div class="slider-block">
+              <div class="slider-row">
+                <span class="label-inline">🎁 Presentation</span>
+                <span class="emoji" id="presentationEmoji">🙂</span>
+                <span class="pill" id="presentationValue">5</span>
+              </div>
+              <input type="range" min="1" max="10" value="5" class="range" id="presentationRange" />
+            </div>
 
-<script src="/static/app.js"></script>
+            <div class="slider-block">
+              <div class="slider-row">
+                <span class="label-inline">✨ Christmas Spirit</span>
+                <span class="emoji" id="spiritEmoji">🙂</span>
+                <span class="pill" id="spiritValue">5</span>
+              </div>
+              <input type="range" min="1" max="10" value="5" class="range" id="spiritRange" />
+            </div>
+
+            <label class="label">Comments (optional)</label>
+            <textarea class="input" id="comments" rows="3" placeholder="Quick note…"></textarea>
+
+            <button class="btn btn-primary" id="submitBtn" type="submit">🎅 Submit Score</button>
+            <div class="helper" id="submitStatus" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card card-wide">
+        <div class="card-header">
+          <div class="card-title">✨ Fun</div>
+        </div>
+        <div class="card-body fun-grid">
+          <div>
+            <div class="section-title">🎂 Dessert roster</div>
+            <div id="roster" class="roster"></div>
+          </div>
+          <div>
+            <div class="section-title">🕯️ Recent activity</div>
+            <div id="activity" class="activity"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
 </body>
 </html>

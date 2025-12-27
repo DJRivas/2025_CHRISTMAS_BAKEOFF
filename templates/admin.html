@@ -1,18 +1,69 @@
-
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Bakeoff</title>
-<link rel="stylesheet" href="/static/styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Admin • 2025 Holiday Bakeoff</title>
+  <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
-<h1>Admin Panel</h1>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-title">🛠️ Admin</div>
+      <div class="brand-subtitle">Edit participants + dessert names</div>
+    </div>
+    <nav class="topbar-actions">
+      <a class="btn btn-ghost" href="/">← Back</a>
+    </nav>
+  </header>
 
-<div id="participants"></div>
+  <main class="container">
+    <section class="grid">
+      <div class="card card-wide">
+        <div class="card-header">
+          <div class="card-title">👩‍🍳 Participants & Desserts</div>
+          <div class="card-actions">
+            <button class="btn btn-ghost" id="addRowBtn" type="button">＋ Add</button>
+            <button class="btn btn-primary" id="saveParticipantsBtn" type="button">💾 Save</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="helper" id="adminStatus" aria-live="polite"></div>
 
-<button onclick="addParticipant()">Add Participant</button>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Participant</th>
+                  <th>Dessert name</th>
+                  <th class="col-tight"></th>
+                </tr>
+              </thead>
+              <tbody id="participantsTbody"></tbody>
+            </table>
+          </div>
 
-<script src="/static/admin.js"></script>
+          <div class="hint">
+            Tip: keep names short (great for iPhone). Dessert names can be fun like “Gingerbread Cheesecake”.
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="pwModal" data-require="{{ '1' if require_password else '0' }}">
+    <div class="modal-card">
+      <div class="modal-title">🔒 Admin access</div>
+      <div class="modal-subtitle">Enter the admin password</div>
+      <input class="input" id="adminPasswordInput" type="password" placeholder="Password" />
+      <div class="modal-actions">
+        <a class="btn btn-ghost" href="/">Cancel</a>
+        <button class="btn btn-primary" id="adminPasswordBtn" type="button">Unlock</button>
+      </div>
+      <div class="helper" id="pwStatus" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <script src="/static/admin.js"></script>
 </body>
 </html>
