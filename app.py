@@ -1,3 +1,15 @@
+"""Holiday Bakeoff 2025 app (Flask + Socket.IO).
+
+Deploy note (Render):
+This app uses Flask-SocketIO with the Eventlet worker for realtime updates.
+Eventlet MUST be monkey-patched before importing Flask/OpenAI, otherwise
+you can see errors like "Working outside of request context" during startup.
+"""
+
+# ---- Eventlet monkey patch (must be first) ----
+import eventlet
+eventlet.monkey_patch()
+
 import io
 import os
 import json
@@ -29,11 +41,17 @@ from db import (
     get_data_dir,
 )
 
-# Optional AI (requires OPENAI_API_KEY)
-try:
-    from openai import OpenAI
-except Exception:
-    OpenAI = None
+# Optional AI (requires OPENAI_API_KEY).
+# Imported lazily to keep Eventlet startup stable.
+def get_ai_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        return None
+    try:
+        from openai import OpenAI  # local import on purpose
+        return OpenAI(api_key=api_key)
+    except Exception:
+        return None
 
 
 def utc_now_iso() -> str:
@@ -306,12 +324,11 @@ def api_admin_get_backup(filename: str):
 @app.post("/api/ai/commentary")
 def api_ai_commentary():
     """Generates festive commentary for the dashboard. Optional."""
-    if OpenAI is None:
-        return jsonify({"ok": False, "error": "OpenAI SDK not installed"}), 500
-
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        return jsonify({"ok": False, "error": "OPENAI_API_KEY not set"}), 400
+    client = get_ai_client()
+    if client is None:
+        if not os.getenv("OPENAI_API_KEY"):
+            return jsonify({"ok": False, "error": "OPENAI_API_KEY not set"}), 400
+        return jsonify({"ok": False, "error": "OpenAI SDK failed to load"}), 500
 
     model = os.getenv("OPENAI_MODEL", "gpt-5")
 
@@ -329,7 +346,6 @@ def api_ai_commentary():
     )
 
     try:
-        client = OpenAI(api_key=api_key)
         resp = client.responses.create(
             model=model,
             input=[{"role": "user", "content": prompt}],
