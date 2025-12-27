@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin • Holiday Bakeoff</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="emoji">🎅</span> Admin Controls</div>
+    <div class="right">
+      <a class="pill" href="/">Back to Dashboard</a>
+      <form action="/logout" method="POST" style="display:inline;">
+        <button class="pill danger" type="submit">Logout</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Competition Settings</h2>
+      <div class="grid2">
+        <div>
+          <label>Competition name</label>
+          <input id="competitionName" placeholder="2025 Holiday Bakeoff" />
+        </div>
+        <div>
+          <label>Voting</label>
+          <div class="row">
+            <label class="switch">
+              <input id="votingOpen" type="checkbox" />
+              <span class="slider"></span>
+            </label>
+            <span id="votingLabel" class="muted"></span>
+          </div>
+        </div>
+      </div>
+
+      <h3>Criteria (0–10 each)</h3>
+      <p class="muted">You can rename criteria and weights. Weight 1.0 means normal. 2.0 means counts double.</p>
+      <div id="criteriaList"></div>
+      <div class="row">
+        <button class="pill" id="addCriterion">Add criterion</button>
+        <button class="pill primary" id="saveSettings">Save settings</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Participants & Desserts</h2>
+      <div class="grid2">
+        <div>
+          <h3>Add participant</h3>
+          <div class="row">
+            <input id="newParticipant" placeholder="Name (e.g., Yesenia)" />
+            <button class="pill primary" id="addParticipant">Add</button>
+          </div>
+          <div id="participants"></div>
+        </div>
+        <div>
+          <h3>Dessert info</h3>
+          <p class="muted">Each participant can have one dessert. This is optional but makes the board more fun.</p>
+          <div id="desserts"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Backups & Data Safety</h2>
+      <p class="muted">Create JSON backups regularly. You can also download the live SQLite database file.</p>
+      <div class="row">
+        <button class="pill primary" id="createBackup">Create backup now</button>
+        <button class="pill" id="downloadDb">Download database (.sqlite3)</button>
+        <a class="pill" href="/api/admin/export" target="_blank">Export JSON</a>
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <input id="importMode" value="replace" style="width: 140px;" title="replace or merge" />
+        <input id="importFile" type="file" accept="application/json" />
+        <button class="pill" id="importJson">Import JSON</button>
+      </div>
+      <div id="backupList"></div>
+    </section>
+
+    <section class="card">
+      <h2>Optional AI Flavor ✨</h2>
+      <p class="muted">If you set <code>OPENAI_API_KEY</code> in Render, this will generate fun holiday commentary based on the current leaderboard.</p>
+      <div class="row">
+        <button class="pill" id="aiCommentary">Generate holiday commentary</button>
+      </div>
+      <pre id="aiOutput" class="pre"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Danger Zone</h2>
+      <p class="muted">Reset wipes the competition data (participants, desserts, scores). Use with care.</p>
+      <button class="pill danger" id="resetAll">Reset competition data</button>
+    </section>
+  </main>
+
+  <script src="/static/admin.js"></script>
+</body>
+</html>

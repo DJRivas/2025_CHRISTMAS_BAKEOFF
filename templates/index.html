@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2025 Holiday Bakeoff</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🎄</text></svg>">
+</head>
+<body class="theme-christmas">
+  <div id="snow"></div>
+
+  <header class="header">
+    <div class="brand">
+      <div class="brand-emoji">🎄</div>
+      <div>
+        <h1 id="competitionName">2025 Holiday Bakeoff</h1>
+        <div class="sub">Live leaderboard • Real-time updates • Holiday vibes</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a class="btn btn-ghost" href="/admin">Admin</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="grid">
+      <section class="card">
+        <div class="card-title">
+          <div>🏆 Leaderboard</div>
+          <div class="muted" id="lastUpdated">—</div>
+        </div>
+        <div id="leaderboard"></div>
+        <div class="card-foot">
+          <div class="muted" id="scoreCount"></div>
+          <button class="btn" id="refreshBtn">Refresh</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title">🧁 Submit a Score</div>
+        <div class="notice" id="votingNotice"></div>
+
+        <form id="scoreForm">
+          <label>Judge name</label>
+          <input id="judgeName" placeholder="e.g., Bryan" required />
+
+          <label>Participant / Dessert</label>
+          <select id="participantSelect" required></select>
+
+          <div id="dessertPreview" class="dessert-preview"></div>
+
+          <div id="criteriaFields"></div>
+
+          <label>Comments (optional)</label>
+          <textarea id="comment" rows="3" placeholder="Short notes, hot takes, holiday cheer..."></textarea>
+
+          <button class="btn btn-primary" type="submit">Submit Score</button>
+          <div id="formMsg" class="muted" style="margin-top:10px;"></div>
+        </form>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:18px;">
+      <div class="card-title">✨ Fun</div>
+      <div class="two-col">
+        <div>
+          <div class="muted">Dessert roster</div>
+          <div id="desserts" class="pill-list"></div>
+        </div>
+        <div>
+          <div class="muted">Recent activity</div>
+          <div id="events" class="events"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>Made with ❤️ for the holiday season • Data saved on a persistent disk</div>
+  </footer>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

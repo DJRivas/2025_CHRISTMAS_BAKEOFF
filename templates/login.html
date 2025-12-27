@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login • Holiday Bakeoff</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="auth">
+    <div class="auth-card">
+      <div class="brand-big">🎄 Holiday Bakeoff Admin</div>
+      <p class="muted">Enter the admin password to manage participants, backups, and settings.</p>
+      {% if error %}
+        <div class="alert">{{ error }}</div>
+      {% endif %}
+      <form method="post" action="/login">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Admin password" required />
+        <button class="btn primary" type="submit">Login</button>
+      </form>
+      <a class="link" href="/">← Back to dashboard</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: holiday-bakeoff-2025
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -k eventlet -w 1 -b 0.0.0.0:$PORT app:app
+    envVars:
+      - key: DATA_DIR
+        value: /var/data
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false
+    disks:
+      - name: bakeoff-data
+        mountPath: /var/data
+        sizeGB: 1
